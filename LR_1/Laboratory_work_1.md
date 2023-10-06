@@ -4,7 +4,7 @@
 
 ### Задание: 
 Реализуйте интегрирование, используя последовательные вычисления в основном потоке.
-Формулировка задания указана по ссылке: https://replit.com/@DmitryVlasov3/programming-07-theme01-lr01#main.py
+Формулировка задания указана по ссылке: [https://replit.com/@DmitryVlasov3/programming-07-theme01-lr01#main.py](https://replit.com/@DmitryVlasov3/programming-07-theme01-lr01#main.py)
 
 Сделайте форк данного борда, напишите код, позволяющий решить задачу и представьте ссылку в качестве ответа на данное задание.
 ~~~
@@ -66,5 +66,5 @@ integrate(math.atan, 0, math.pi / 2, n_iter=10**6)
 ### Решение:
 
 
-URL: [Лабораторная работа 1-2](https://replit.com/@Buryackov-Ivan/)
+URL: [Лабораторная работа 1](https://replit.com/@Buryackov-Ivan/)
 
