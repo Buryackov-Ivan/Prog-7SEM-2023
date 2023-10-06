@@ -12,14 +12,16 @@
 
 1.3: Разработайте программу, которая использует asyncio.gather для выполнения двух асинхронных задач параллельно и затем обрабатывает результаты в отдельной функции в цикле.
 
-1.4: Улучшите предыдущую программу, сделав параллельно запрос к публичному веб­серверу и к любой публичной базе данных с распечаткой результатов этих вызовов. Например сделайте запросы к публичному ресурсу последовательностей РНК ­ RNACentral: https://rnacentral.org/about-us.
+1.4: Улучшите предыдущую программу, сделав параллельно запрос к публичному веб­серверу и к любой публичной базе данных с распечаткой результатов этих вызовов. Например сделайте запросы к публичному ресурсу последовательностей РНК ­ RNACentral: https://rnacentral.org/about-us.
+~~~
 # https :// rnacentral . org/api
 # URL вебсервера−
 WEB_SERVER_URL = " https :// rnacentral . org/api/v1/rna/"
 # https :// rnacentral . org/help/public−database
 # Строкаподключениякбазеданных
 DB_CONNECTION_STRING = \
-" postgres ://reader :NWDMCE5xdipIjRrp@hh−pgsql−public . ebi . ac .uk:5432/pfmegrnargs "
+" postgres ://reader :NWDMCE5xdipIjRrp@hh−pgsql−public.ebi.ac.uk:5432/pfmegrnargs "
+~~~
 
 В этом случае вам потребуются библиотеки aiohttp ­ для любых HTTP запросов и asyncpg ­ для базы данных Postgres ресурса RNACentral.
 Отформатируйте красиво JSON сообщение с помощбю модуля json, если это URL типа https://rnacentral.org/api/v1/rna/.
