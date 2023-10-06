@@ -31,28 +31,32 @@ integrate2(math.cos, 0, 1, 100) # или integrate2(math.cos, 0, 1, n_iter=100)
 Для борда выше:
 
 Существует два способа вызвать timeit для оценки времени для n_iter=1000 собственно внутри кода:
-
+~~~
 timeit.timeit("integrate(lambda x: x+1, 0, 1, n_iter=1000)",
  setup="from integrate import integrate")
+~~~
 или из командной строки:
-
+~~~
 >>>python -m timeit -s "from integrate import integrate" 
                       "integrate(lambda x: x+1, 0, 1, n_iter=1000)"
+~~~
 Для импорта нескольких библиотек после ключа -s указываем импорты через ";" т.е. например, для импорта функции sin -s "from integrate import integrate; from math import sin"
 
 Если будете использовать Jupyter Notebook:
-
+~~~
 %%timeit -n100
 
 integrate(math.atan, 0, math.pi / 2, n_iter=10**5)
 
 integrate(math.atan, 0, math.pi / 2, n_iter=10**6)
-Если будете делать это в обычной среде, то см документацию. 
+~~~
+Если будете делать это в обычной среде, то см [документацию](https://docs.python.org/3/library/timeit.html#python-interface). 
 
-Например, можно в режиме REPL или из командной строки (см. примеры):
-
+Например, можно в режиме REPL или из командной строки (см. [примеры](https://docs.python.org/3/library/timeit.html#examples)):
+~~~
 >>> import timeit
 >>> timeit.timeit('"-".join(str(n) for n in range(100))', number=10000)
+~~~
 Реализуйте интегрирование, используя Thread, Lock на списке потоков, который сформирован вручную.
 
 Реальзуйте численной интегрирование, создав список потоков, каждый из которых интегрирует (производит суммирование) функции на заданном числе подинтервалов. Используйте созданный вручную список потоков и объект типа Lock для доступа на запись к переменной, содержащей интегральную сумму. Замерьте время этих вычислений с помощью модуля timeit.
