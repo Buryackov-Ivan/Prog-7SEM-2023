@@ -36,9 +36,186 @@ integrate(math.atan, 0, math.pi / 2, n_iter=10∗∗6)
 Каждый поток должен обрабатывать свой фрагмент файлов директории и синхронизироваться с другими потоками, чтобы убедиться, что файл найден только один раз. Как только первый файл по его шаблону найден ­ все потоки поиска завершаются.
 
 
-
+___________________________________________
 ### Решение:
+___________________________________________
+## 1.1
+Конечная реализация программы может варьироваться в зависимости от используемого языка программирования. Ниже приведен пример реализации на языке Python с использованием модуля threading:
 
+```python
+import threading
+
+def print_thread_name():
+    thread_name = threading.current_thread().name
+    print("Thread name:", thread_name)
+
+# Создаем несколько потоков
+threads = []
+for i in range(5):
+    thread = threading.Thread(target=print_thread_name)
+    threads.append(thread)
+    thread.start()
+
+# Ожидаем завершения всех потоков
+for thread in threads:
+    thread.join()
+```
+
+В этом примере мы определяем функцию `print_thread_name`, которая выводит имя текущего потока, используя `threading.current_thread().name`. Затем мы создаем несколько потоков, каждый вызывая функцию `print_thread_name`. После этого мы запускаем каждый поток с помощью метода `start()` и ожидаем их завершения с помощью метода `join()`. В результате на экране будут выведены имена всех потоков.
+
+## 1.2
+
+Ниже приведен пример программы на языке Python для одновременной загрузки нескольких файлов с использованием потоков и библиотеки requests:
+
+```python
+import threading
+import requests
+
+def download_file(url, filename):
+    response = requests.get(url)
+    with open(filename, 'wb') as file:
+        file.write(response.content)
+    print(f"Downloaded {filename}")
+
+# URL-адреса файлов для загрузки
+urls = [
+    "https://example.com/image1.jpg",
+    "https://example.com/image2.jpg",
+    "https://example.com/image3.jpg"
+]
+
+# Создаем потоки для загрузки каждого файла
+threads = []
+for i, url in enumerate(urls):
+    filename = f"image{i+1}.jpg"
+    thread = threading.Thread(target=download_file, args=(url, filename))
+    threads.append(thread)
+    thread.start()
+
+# Ожидаем завершения всех потоков
+for thread in threads:
+    thread.join()
+```
+
+В этом примере мы определяем функцию `download_file`, которая использует библиотеку requests для загрузки файла по заданному URL-адресу и сохраняет его под указанным именем. Затем мы создаем отдельный поток для загрузки каждого файла, и каждый поток вызывает функцию `download_file` с соответствующим URL-адресом и именем файла. После запуска всех потоков мы ожидаем их завершения с помощью метода `join()`, чтобы программа не завершилась до того, как все файлы будут загружены.
+
+Примечание: В приведенном примере используется библиотека `requests`, однако вы также можете использовать модуль `urllib` или другие подходящие библиотеки для загрузки файлов в своем коде.
+
+## 1.3
+
+Ниже приведен пример программы на языке Python, который выполняет одновременные HTTP-запросы с использованием потоков и библиотеки requests:
+
+```python
+import threading
+import requests
+
+def make_request(url):
+    response = requests.get(url)
+    print(f"Response from {url}: {response.status_code}")
+
+# Список URL-адресов для запросов
+urls = [
+    "https://example.com",
+    "https://google.com",
+    "https://openai.com"
+]
+
+# Создаем потоки для каждого запроса
+threads = []
+for url in urls:
+    thread = threading.Thread(target=make_request, args=(url,))
+    threads.append(thread)
+    thread.start()
+
+# Ожидаем завершения всех потоков
+for thread in threads:
+    thread.join()
+```
+
+В этом примере мы определяем функцию `make_request`, которая выполняет GET-запрос к заданному URL-адресу с использованием библиотеки requests и выводит статус-код ответа. Затем мы создаем потоки для каждого URL-адреса, и каждый поток вызывает функцию `make_request` с соответствующим URL-адресом. После запуска всех потоков мы ожидаем их завершения с помощью метода `join()`, чтобы программа не завершилась до того, как все запросы будут выполнены.
+
+Примечание: В приведенном примере используется библиотека `requests`, однако вы также можете использовать другие подходящие библиотеки для выполнения HTTP-запросов в своем коде.
+
+## 1.4
+
+Ниже приведен пример программы на языке Python, которая вычисляет факториал числа с использованием нескольких потоков:
+
+```python
+import threading
+
+def factorial(n):
+    if n <= 1:
+        return 1
+    else:
+        return n * factorial(n - 1)
+
+def calculate_factorial(n):
+    result = factorial(n)
+    print(f"Factorial of {n} is {result}")
+
+# Ввод числа для вычисления факториала
+num = int(input("Enter a number: "))
+
+# Создаем поток для вычисления факториала
+thread = threading.Thread(target=calculate_factorial, args=(num,))
+thread.start()
+
+# Ожидаем завершения потока
+thread.join()
+```
+
+В этом примере мы определяем функцию `factorial`, которая рекурсивно вычисляет факториал числа. Затем у нас есть функция `calculate_factorial`, которая вызывает функцию `factorial` с заданным числом и выводит результат на экран.
+
+Мы создаем поток, используя функцию `threading.Thread`. При создании потока мы указываем целевую функцию `calculate_factorial` и передаем аргумент с числом для вычисления факториала. Затем мы запускаем поток с помощью метода `start()`. После этого основной поток ожидает завершения созданного потока с помощью метода `join()`, чтобы программа не завершилась до того, как будет вычислен факториал.
+
+## 1.5
+
+Ниже представлен пример реализации многопоточного алгоритма быстрой сортировки на языке Python с использованием модуля threading:
+
+```python
+import threading
+
+def quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    
+    pivot = arr[len(arr) // 2]
+    smaller, equal, larger = [], [], []
+    
+    for num in arr:
+        if num < pivot:
+            smaller.append(num)
+        elif num == pivot:
+            equal.append(num)
+        else:
+            larger.append(num)
+    
+    # Создаем потоки для рекурсивной сортировки меньших и больших элементов
+    smaller_thread = threading.Thread(target=quicksort, args=(smaller,))
+    larger_thread = threading.Thread(target=quicksort, args=(larger,))
+    
+    # Запускаем потоки
+    smaller_thread.start()
+    larger_thread.start()
+    
+    # Ожидаем завершения потоков
+    smaller_thread.join()
+    larger_thread.join()
+    
+    return smaller + equal + larger
+
+# Пример использования
+array = [9, 4, 7, 2, 1, 5, 3, 6, 8]
+sorted_array = quicksort(array)
+print(sorted_array)
+```
+
+В этом примере функция `quicksort` рекурсивно разделяет массив на три части: элементы меньше опорного элемента `smaller`, элементы равные опорному элементу `equal` и элементы больше опорного элемента `larger`. Затем создаются два отдельных потока для сортировки меньших и больших частей массива, соответственно. Потоки запускаются и ждут завершения с помощью методов `start()` и `join()`. В конце функция объединяет отсортированную меньшую часть, равные элементы и отсортированную большую часть, и возвращает отсортированный массив.
+
+Важно отметить, что в данном примере на практике многопоточная реализация быстрой сортировки не всегда будет эффективнее однопоточной реализации из-за переключения контекста между потоками и возможной потери производительности. Тем не менее, этот пример демонстрирует принцип работы многопоточного алгоритма быстрой сортировки.
+
+
+Код также продублирован в онлайн-среде разработки, Replit:
 
 URL: [Лабораторная работа 2](https://replit.com/@Buryackov-Ivan/)
 
