@@ -333,6 +333,213 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
 
 Далее, используя `concurrent.futures.as_completed`, мы ожидаем завершения каждого потока и получаем результаты из объектов Future. Результат в этом примере просто выводится на экран, но вы можете изменить код, чтобы обрабатывать результаты по вашему усмотрению.
 
+## 2.4
+
+Ниже приведен пример программы, которая создает два потока: один поток записывает данные в файл, а другой поток считывает данные из файла. Объекты типа `Future` используются для синхронизации потоков и избегания гонки потоков.
+
+```python
+import concurrent.futures
+
+# Функция для записи данных в файл
+def write_data(filename, data):
+    with open(filename, "w") as file:
+        file.write(data)
+        return f"Data written to {filename}"
+
+# Функция для чтения данных из файла
+def read_data(filename):
+    with open(filename, "r") as file:
+        data = file.read()
+        return f"Data read from {filename}: {data}"
+
+# Создание пула потоков
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    # Запись данных в файл
+    write_future = executor.submit(write_data, "data.txt", "Hello, World!")
+
+    # Чтение данных из файла
+    read_future = executor.submit(read_data, "data.txt")
+
+    # Ожидание завершения обоих потоков и получение результатов
+    write_result = write_future.result()
+    read_result = read_future.result()
+
+    print(write_result)
+    print(read_result)
+```
+
+В данном примере используется модуль `concurrent.futures`, который предоставляет класс `ThreadPoolExecutor` для создания пула потоков.
+
+Функция `write_data` открывает файл в режиме записи и записывает данные в файл.
+
+Функция `read_data` открывает файл в режиме чтения и считывает данные из файла.
+
+В основной части программы создается пул потоков с помощью `ThreadPoolExecutor`. Затем используя `executor.submit()`, мы запускаем выполнение функций `write_data` и `read_data` в отдельных потоках и получаем объекты `Future` для каждого потока.
+
+Далее, используя метод `result()` для каждого объекта `Future`, мы ожидаем завершения каждого потока и получаем результаты. Результаты выводятся на экран.
+
+## 2.5
+
+Ниже приведен пример программы, которая создает 3 потока с использованием объекта типа `Event` для синхронизации. Первый поток устанавливает состояние события каждую секунду, второй поток ожидает наступления события и выводит сообщение, а третий поток проверяет, произошло ли событие и выводит соответствующее сообщение:
+
+```python
+import threading
+import time
+
+# Создание объекта типа Event
+event = threading.Event()
+
+# Функция для установки состояния события каждую секунду
+def set_event():
+    while True:
+        time.sleep(1)
+        event.set()
+
+# Функция для ожидания события и вывода сообщения
+def wait_event():
+    event.wait()
+    print("Event occurred")
+
+# Функция для вывода сообщения "Event did not occur"
+def check_event():
+    while not event.is_set():
+        print("Event did not occur")
+        time.sleep(1)
+
+# Создание потоков
+set_event_thread = threading.Thread(target=set_event)
+wait_event_thread = threading.Thread(target=wait_event)
+check_event_thread = threading.Thread(target=check_event)
+
+# Запуск потоков
+set_event_thread.start()
+wait_event_thread.start()
+check_event_thread.start()
+```
+
+В данном примере используются функции `threading.Event()`, `event.set()`, `event.wait()` и `event.is_set()` для контроля состояния события.
+
+Функция `set_event()` устанавливает состояние события каждую секунду, вызывая `event.set()`.
+
+Функция `wait_event()` ожидает наступления события, вызывая `event.wait()`, и выводит сообщение "Event occurred" после наступления события.
+
+Функция `check_event()` проверяет состояние события с помощью `event.is_set()`. Если событие не произошло, выводится сообщение "Event did not occur" каждую секунду.
+
+Затем создаются и запускаются три потока: первый поток вызывает функцию `set_event()`, второй поток вызывает функцию `wait_event()`, а третий поток вызывает функцию `check_event()`.
+
+## 2.6
+
+Приведен ниже пример класса "очередь" (Queue), который использует рекурсивный блокировщик RLock для обеспечения безопасности доступа к очереди из нескольких потоков:
+
+```python
+import threading
+
+class Queue:
+    def __init__(self):
+        self.queue = []
+        self.lock = threading.RLock() # Создание рекурсивного блокировщика
+
+    def enqueue(self, item):
+        with self.lock:  # Захватываем блокировку перед добавлением элемента
+            self.queue.append(item)
+
+    def dequeue(self):
+        with self.lock:  # Захватываем блокировку перед удалением элемента
+            if not self.is_empty():
+                return self.queue.pop(0)
+
+    def is_empty(self):
+        with self.lock:  # Захватываем блокировку для проверки пустоты очереди
+            return len(self.queue) == 0
+```
+
+В этом примере класс `Queue` содержит методы `enqueue()` для добавления элемента в очередь, `dequeue()` для удаления элемента из очереди и `is_empty()` для проверки, является ли очередь пустой.
+
+Для обеспечения безопасности доступа из нескольких потоков используется рекурсивный блокировщик `threading.RLock()`. Он позволяет одному потоку захватить блокировку несколько раз, без блокировки самого себя.
+
+В каждом методе класса, где требуется доступ к очереди, используется конструкция `with self.lock:` для захвата блокировки перед выполнением операции. Это гарантирует, что только один поток может работать с очередью в определенный момент времени.
+
+Обратите внимание, что в примере реализована простейшая очередь на основе списка, где элементы извлекаются в порядке добавления (FIFO). Вы можете доработать класс, добавив другие функции или изменяя способ хранения элементов в очереди в соответствии со своими потребностями.
+
+## 2.7
+
+Для создания двух потоков, представляющих сервер и клиент, и использования `threading.Barrier` для синхронизации между ними, вы можете воспользоваться следующим примером на языке Python:
+
+```python
+import threading
+
+# Создаем барьер, чтобы оба потока ожидали друг друга
+barrier = threading.Barrier(2)
+
+# Функция для клиентского потока
+def client_thread():
+    print("Клиент: Ожидаем сервера...")
+    barrier.wait()
+    print("Клиент: Отправляем запрос серверу")
+
+# Функция для серверного потока
+def server_thread():
+    print("Сервер: Готов к работе")
+    barrier.wait()
+    print("Сервер: Получен запрос от клиента и обрабатывает его")
+
+# Создаем потоки
+client = threading.Thread(target=client_thread)
+server = threading.Thread(target=server_thread)
+
+# Запускаем потоки
+client.start()
+server.start()
+
+# Ждем, пока оба потока завершат выполнение
+client.join()
+server.join()
+```
+
+Этот код создает два потока: один представляет клиента, а другой сервер. После создания барьера с `threading.Barrier(2)`, клиентский поток вызывает `barrier.wait()` и ожидает, пока серверный поток тоже вызовет `barrier.wait()`. Только после этого оба потока продолжат выполнение.
+
+## 2.8
+
+Для параллельного поиска файла в директории с использованием нескольких потоков, мы можем воспользоваться модулем `concurrent.futures` для управления потоками и выполнения поиска. Вот пример программы на Python, которая выполняет это задание:
+
+```python
+import os
+import concurrent.futures
+
+# Функция для поиска файла в директории
+def search_file(directory, file_name):
+    for root, _, files in os.walk(directory):
+        if file_name in files:
+            return os.path.join(root, file_name)
+    return None
+
+# Функция для каждого потока
+def thread_search(thread_id, directory, file_name):
+    result = search_file(directory, file_name)
+    if result:
+        print(f"Поток {thread_id}: Файл найден: {result}")
+        return result
+    return None
+
+if __name__ == "__main__":
+    directory = "/путь/к/директории"  # Замените на путь к директории, в которой ищем файл
+    file_name = "название_файла"  # Замените на имя файла, который вы ищете
+
+    # Создаем пул потоков
+    num_threads = 4  # Здесь можно установить желаемое количество потоков
+    with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
+        futures = [executor.submit(thread_search, i, directory, file_name) for i in range(num_threads)]
+
+        for future in concurrent.futures.as_completed(futures):
+            result = future.result()
+            if result:
+                print(f"Первый найденный файл: {result}")
+                executor.shutdown()
+                break
+```
+
+Этот код создает несколько потоков для поиска файла в заданной директории. Первый поток, который находит файл, завершает выполнение, и остальные потоки завершаются сразу после этого. Это обеспечивает, что файл будет найден только один раз, и поиск завершится, как только файл будет обнаружен.
+
 Код также продублирован в онлайн-среде разработки, Replit:
 
 URL: [Лабораторная работа 2](https://replit.com/@Buryackov-Ivan/)
