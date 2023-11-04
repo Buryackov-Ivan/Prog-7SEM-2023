@@ -214,6 +214,119 @@ print(sorted_array)
 
 Важно отметить, что в данном примере на практике многопоточная реализация быстрой сортировки не всегда будет эффективнее однопоточной реализации из-за переключения контекста между потоками и возможной потери производительности. Тем не менее, этот пример демонстрирует принцип работы многопоточного алгоритма быстрой сортировки.
 
+## 2.2
+
+Ниже приведен пример программы, которая симулирует банк с использованием потоков и объектов типа Lock для синхронизации доступа к счету клиента:
+
+```python
+import threading
+
+class BankAccount:
+    def __init__(self):
+        self.balance = 0
+        self.lock = threading.Lock()
+
+    def deposit(self, amount):
+        with self.lock:
+            self.balance += amount
+
+    def withdraw(self, amount):
+        with self.lock:
+            if self.balance >= amount:
+                self.balance -= amount
+                return True
+            else:
+                return False
+
+
+def make_deposit(account, amount):
+    account.deposit(amount)
+    print(f"Deposited {amount} dollars")
+
+
+def make_withdrawal(account, amount):
+    result = account.withdraw(amount)
+    if result:
+        print(f"Withdrew {amount} dollars")
+    else:
+        print("Insufficient funds")
+
+
+# Пример использования:
+account = BankAccount()
+
+deposit_thread = threading.Thread(target=make_deposit, args=(account, 100))
+withdraw_thread = threading.Thread(target=make_withdrawal, args=(account, 50))
+
+deposit_thread.start()
+withdraw_thread.start()
+
+deposit_thread.join()
+withdraw_thread.join()
+
+print(f"Current balance: {account.balance} dollars")
+```
+
+В данном примере создается класс BankAccount с методами `deposit` и `withdraw`, которые манипулируют балансом счета клиента. Метод `deposit` увеличивает баланс на указанную сумму, а метод `withdraw` уменьшает баланс на указанную сумму только в том случае, если на счету достаточно средств.
+
+Затем создаются два потока: один для внесения депозита на счет, а другой для снятия денег. Оба потока вызывают соответствующие методы на объекте BankAccount, передавая ему сумму операции.
+
+Для обеспечения синхронизации доступа к счету используется объект Lock. Каждый метод `deposit` и `withdraw` выполняется в блоке с оператором with, который обращается к Lock для захвата блокировки перед выполнением операции, а затем освобождает блокировку после завершения операции.
+
+После выполнения потоков выводится текущий баланс счета. Обратите внимание, что вывод баланса на экран происходит после завершения обоих потоков, чтобы гарантировать корректный результат интерфейсом print().
+
+## 2.3
+
+Ниже приведен пример программы, которая использует объекты типа `Future` и семафор для асинхронной загрузки и сохранения нескольких изображений с Интернета:
+
+```python
+import concurrent.futures
+import requests
+
+MAX_CONCURRENT_DOWNLOADS = 2  # Максимальное количество одновременно выполняющихся потоков загрузки
+IMAGE_URLS = [
+    "https://example.com/image1.jpg",
+    "https://example.com/image2.jpg",
+    "https://example.com/image3.jpg",
+    "https://example.com/image4.jpg"
+]
+
+def download_image(url, semaphore):
+    with semaphore:
+        response = requests.get(url)
+        if response.status_code == 200:
+            filename = url.split("/")[-1]
+            with open(filename, "wb") as file:
+                file.write(response.content)
+            return f"Downloaded {filename}"
+        else:
+            return f"Failed to download {url}"
+
+# Создание семафора с указанным количеством разрешений
+semaphore = concurrent.futures.Semaphore(MAX_CONCURRENT_DOWNLOADS)
+
+# Создание пула потоков
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    # Создание списка объектов Future для каждого изображения
+    futures = [executor.submit(download_image, url, semaphore) for url in IMAGE_URLS]
+
+    # Получение результатов из объектов Future по мере завершения потоков
+    for future in concurrent.futures.as_completed(futures):
+        result = future.result()
+        print(result)
+```
+
+В данном примере используется модуль `concurrent.futures`, который предоставляет класс `ThreadPoolExecutor` для создания пула потоков и объект `Semaphore` для создания семафора.
+
+`MAX_CONCURRENT_DOWNLOADS` - это максимальное количество одновременно выполняющихся потоков загрузки, которое мы устанавливаем в 2 в данном примере.
+
+`IMAGE_URLS` - это список URL-адресов изображений, которые мы хотим загрузить.
+
+Функция `download_image` выполняет загрузку изображения по указанному URL-адресу. Она захватывает семафор перед выполнением запроса, чтобы ограничить количество одновременно выполняющихся потоков загрузки. Если загрузка происходит успешно, изображение сохраняется на диск.
+
+В основной части программы создается пул потоков с помощью `ThreadPoolExecutor`. Затем создается список объектов Future, где каждый объект Future создается путем вызова `executor.submit(download_image, url, semaphore)` для каждого URL-адреса изображения. Это запускает выполнение функции `download_image` в отдельном потоке и возвращает объект Future.
+
+Далее, используя `concurrent.futures.as_completed`, мы ожидаем завершения каждого потока и получаем результаты из объектов Future. Результат в этом примере просто выводится на экран, но вы можете изменить код, чтобы обрабатывать результаты по вашему усмотрению.
 
 Код также продублирован в онлайн-среде разработки, Replit:
 
