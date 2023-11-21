@@ -16,7 +16,9 @@
 Изучите также дополнительные компактные руководства по работе с формами "логина" и регистрации:
 
 • [A Guide to User Registration, Login, and Logout in Django](https://ordinarycoders.com/blog/article/django-user-register-login-logout)
+
 • [Render Forms with Django Crispy Forms](https://ordinarycoders.com/blog/article/render-forms-with-django-crispy-forms)
+
 • [Django Login and Logout Tutorial](https://learndjango.com/tutorials/django-login-and-logout-tutorial)
 
 
