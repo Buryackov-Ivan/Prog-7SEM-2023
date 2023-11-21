@@ -40,6 +40,9 @@ spring init --build maven --force.
 Настройте IntelliJ Idea на те дистрибутивы JDK и Maven, которые вы установили с помощью SDKMAN.
 Опционально можно доставить библиотеки для SDKMAN, написанные на [Rust](https://github.com/sdkman/sdkman-cli-native).
 
+### Дополнения к ЛР:
+
+* [Заготовка для приложения - spring-boot-console-site-parser.zip](https://github.com/Buryackov-Ivan/Prog-7SEM-2023/blob/main/LR_9/spring-boot-console-site-parser.zip)
 
 ___________________________________________
 ### Решение:
