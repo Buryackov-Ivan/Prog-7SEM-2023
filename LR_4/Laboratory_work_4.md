@@ -6,6 +6,8 @@
 
 [[video] Лекция - Начало работы с Django](https://www.youtube.com/watch?v=GEJCgxJ30Gc&amp;ab_channel=DmitryVlasov)
 
+[[zip] Пример приложения blog из вводной лекции по Django](https://github.com/Buryackov-Ivan/Prog-7SEM-2023/blob/main/LR_4/blog.zip)
+
 [[presentation] Intro to Django framework](https://docs.google.com/presentation/d/1VcQV5zCXmRyYnSkhX0kLoGEYZ5K4rV_MCbtPrj7YvYg/edit?usp=sharing)
 
 Выполнить все 7 частей туториала, опубликованного по ссылке:
