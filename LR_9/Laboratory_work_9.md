@@ -43,6 +43,7 @@ spring init --build maven --force.
 ### Дополнения к ЛР:
 
 * [Заготовка для приложения - spring-boot-console-site-parser.zip](https://github.com/Buryackov-Ivan/Prog-7SEM-2023/blob/main/LR_9/spring-boot-console-site-parser.zip)
+* [2023.11.18 - Лабораторная работа 9 - Программирование - 4 курс](https://youtu.be/Bt0xjj5syDk?si=ift0rjtIRwXJBf61)
 
 ___________________________________________
 ### Решение:
