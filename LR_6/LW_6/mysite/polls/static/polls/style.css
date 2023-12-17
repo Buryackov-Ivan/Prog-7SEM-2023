@@ -1,0 +1,128 @@
+@font-face {
+    font-family: 'Darknet';
+    src: url('fonts/Darknet-K7xOX.ttf');
+}
+@font-face {
+    font-family: 'DarknetItalic';
+    src: url('fonts/DarknetItalic-rgn8B.ttf');
+}
+
+body {
+    background: white url("images/d90ecd91747845.5e39d055bdf66.png") no-repeat;
+    background-size: cover;
+
+}
+
+.alpha60 {
+    /* Fallback for web browsers that doesn't support RGBa */
+    background: rgb(0, 0, 0);
+    /* RGBa with 0.6 opacity */
+    background: rgba(0, 0, 0, 0.6);
+    /* For IE 5.5 - 7*/
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+    /* For IE 8*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+}
+
+.page-header {
+    /* background-color: #aa00ff; */
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
+}
+
+.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active,
+.page-header h2, .page-header h2 a, .page-header h2 a:visited, .page-header h2 a:active,
+.page-header h3, .page-header h3 a, .page-header h3 a:visited, .page-header h3 a:active
+.page-header h4, .page-header h4 a, .page-header h4 a:visited, .page-header h4 a:active {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.page-header h1 {
+    font-size: 48pt;
+    font-family: 'Freedom';
+    color: #ffffff;
+}
+
+.page-header h4 {
+    font-size: 24pt;
+    font-family: 'Freedon-2';
+    color: #ffffff;
+}
+
+.content {
+    margin-left: 40px;
+    color: #ffffff;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Freedom';
+    color: #ffffff;
+}
+
+.poll h4, .poll h4 a, .pollr h4 a:visited, .poll h4 a:active {
+    color: #cecece;
+    font-family: 'Freedom-2';
+    text-decoration: none;
+    font-size: 28pt;
+}
+
+.content legend h1 {
+    color: #cecece;
+    font-family: 'Freedom-2';
+    text-decoration: none;
+    font-size: 32pt;
+}
+
+.content form fieldset label {
+    color: #cecece;
+    font-family: 'Freedom-2';
+    font-size: 20pt;
+}
+
+.content form .btn-dark {
+    color: #ffffff;
+    font-family: 'Freedom-2';
+    font-size: 20pt;
+}
+
+.date {
+    color: #cecece;
+    font-family: 'Freedom-2';
+    font-size: 16pt;
+}
+
+.save {
+    float: right;
+}
+
+.poll-form textarea, .poll-form input {
+    width: 100%;
+}
+
+.top-menu, .top-menu:hover, .top-menu:visited {
+    color: #ffffff;
+    float: right;
+    font-size: 26pt;
+    margin-right: 20px;
+}
+
+.top-menu-welcome, .top-menu-welcome:hover, .top-menu-welcome:visited {
+    color: #ffffff;
+    float: right;
+    font-size: 13pt;
+    margin-right: 20px;
+    text-decoration: none;
+}
+
+.poll {
+    margin-bottom: 70px;
+}
+
+.poll h1 a, .poll h1 a:visited {
+    color: #cecece;
+}
+
+li a {
+    color: green;
+}
