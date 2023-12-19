@@ -7,7 +7,7 @@
 Комплект 1: Django + OAuth + Google
 1.1: Улучшите приложение для голосований и предыдущей лабораторной работы #5 и реализуйте вход на сайт этого приложения через стандарт OAuth, при условии что пользователь имеет учётную запись Google.
 
-Воспользуйтесь следующими ссылками на образцы реализации данной схемы регистрации на сайте:
+Воспользуйтесь следующими ссылками на образцы реализации данной схемы регистрации на сайте:
 * [Django Google OAuth](https://pylessons.com/django-google-oauth)
 * [Django Google Authentication using django­allauth](https://dev.to/mdrhmn/django-google-authentication-using-django-allauth-18f8)
 * [Adding Google login to your existing Django and Django Rest Framework applications](https://www.hacksoft.io/blog/adding-google-login-to-your-existing-django-and-django-rest-framework-applications)
